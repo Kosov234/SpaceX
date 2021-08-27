@@ -1,43 +1,23 @@
-import React from "react";
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  useQuery,
-  gql,
-} from "@apollo/client";
-
-const client = new ApolloClient({
-  uri: "https://api.spacex.land/graphql",
-  cache: new InMemoryCache(),
-});
-
-interface user {
-  name: string;
-  id: string;
-}
+import React, { Fragment } from "react";
+import Picasso from "@toptal/picasso-provider";
+import { Route, BrowserRouter, Switch } from "react-router-dom";
+import ShipsPage from "./pages/Ships/ships";
+import ShipDetailsPage from "./pages/ShipDetails/shipDetails";
 
 function App() {
-  const { loading, error, data } = useQuery(gql`
-    {
-      users {
-        name
-        id
-      }
-    }
-  `);
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :</p>;
-
   return (
-    <ApolloProvider client={client}>
-      {data.users.map(({ name, id }: user) => (
-        <div key={id}>
-          <p>{name}</p>
-        </div>
-      ))}
-    </ApolloProvider>
+    <Picasso>
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/">
+            <ShipsPage />
+          </Route>
+          <Route exact path="/:id">
+            <ShipDetailsPage />
+          </Route>
+        </Switch>
+      </BrowserRouter>
+    </Picasso>
   );
 }
 
