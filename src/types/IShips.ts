@@ -1,8 +1,5 @@
-export default interface IShip {
-  id: string;
-  name: string;
-  image: string;
-  model: string | null;
-  status: string;
-  year_built: number;
+import IShip from "./IShip";
+
+export default interface IShips {
+  ships: Array<IShip>;
 }

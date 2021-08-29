@@ -1,7 +1,8 @@
 import { Container, Grid, Page, Typography, Image } from "@toptal/picasso";
 import { useParams } from "react-router-dom";
 import React from "react";
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
+import { query } from "../Ship/query";
 
 interface IShipDetailsParams {
   id: string;
@@ -10,21 +11,7 @@ interface IShipDetailsParams {
 const ShipDetailsPage: React.FunctionComponent<{}> = () => {
   const { id }: IShipDetailsParams = useParams();
 
-  const { loading, error, data } = useQuery(gql`
-  {
-    ships(find: {id: "${id}"}) {
-        id
-        name
-        image
-        model
-        status
-        year_built
-        home_port
-        successful_landings
-        type
-      }
-  }
-`);
+  const { loading, error, data } = useQuery(query(id));
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error : {error.message}</p>;

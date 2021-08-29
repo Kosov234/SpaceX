@@ -1,22 +1,11 @@
-import React, { Fragment } from "react";
+import React from "react";
 import Picasso from "@toptal/picasso-provider";
-import { Route, BrowserRouter, Switch } from "react-router-dom";
-import ShipsPage from "./pages/Ships/ships";
-import ShipDetailsPage from "./pages/ShipDetails/shipDetails";
+import Router from "./router";
 
 function App() {
   return (
     <Picasso>
-      <BrowserRouter>
-        <Switch>
-          <Route exact path="/">
-            <ShipsPage />
-          </Route>
-          <Route exact path="/:id">
-            <ShipDetailsPage />
-          </Route>
-        </Switch>
-      </BrowserRouter>
+      <Router />
     </Picasso>
   );
 }
