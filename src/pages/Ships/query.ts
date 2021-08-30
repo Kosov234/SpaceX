@@ -1,11 +1,11 @@
-import { gql } from "@apollo/client";
-import { ShipFragment } from "../Ship/shipFragment";
+import { gql } from '@apollo/client'
+import { ShipFragment } from '../Ship/shipFragment'
 
-export const query = gql`
-  {
-    ships {
+export default gql`
+  query ShipsQuery($limit: Int) {
+    ships(limit: $limit) {
       ...shipFragment
     }
   }
   ${ShipFragment}
-`;
+`

@@ -1,5 +1,5 @@
-import IShip from "./IShip";
+import IShip from './IShip'
 
 export default interface IShips {
-  ships: Array<IShip>;
+  ships: Array<IShip>
 }

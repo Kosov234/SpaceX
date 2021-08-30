@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client'
 
 export const ShipFragment = gql`
   fragment shipFragment on Ship {
@@ -9,4 +9,4 @@ export const ShipFragment = gql`
     status
     year_built
   }
-`;
+`
