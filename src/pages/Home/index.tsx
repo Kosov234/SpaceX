@@ -1,6 +1,6 @@
-import React from "react";
-import { Container, Link, Page, Typography } from "@toptal/picasso";
-import { Link as RouterLink } from "react-router-dom";
+import React from 'react'
+import { Container, Link, Page, Typography } from '@toptal/picasso'
+import { Link as RouterLink } from 'react-router-dom'
 
 const HomePage: React.FC<{}> = () => {
   return (
@@ -14,7 +14,7 @@ const HomePage: React.FC<{}> = () => {
               underline="none"
               as={RouterLink}
               to="/ships"
-              style={{ margin: "15px" }}
+              style={{ margin: '15px' }}
             >
               Ships
             </Link>
@@ -28,8 +28,8 @@ const HomePage: React.FC<{}> = () => {
       </Page.Content>
       <Page.Footer />
     </Page>
-  );
-};
+  )
+}
 
 const Content: React.FC<{}> = () => (
   <Container top="small" bottom="small">
@@ -49,6 +49,6 @@ const Content: React.FC<{}> = () => (
       est laborum.
     </Typography>
   </Container>
-);
+)
 
-export default HomePage;
+export default HomePage

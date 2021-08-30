@@ -1,13 +1,14 @@
-import { gql } from "@apollo/client";
-import { ShipFragment } from "../Ship/shipFragment";
+import { gql } from '@apollo/client'
+import { ShipFragment } from '../Ship/shipFragment'
 
-export const query = (id: string) => gql`
-{
-  ships(find: {id: "${id}"}) {
-    ...shipFragment
+export default gql`
+  query shipQuery($id: ID!) {
+    ship(id: $id) {
       home_port
       successful_landings
       type
+      ...shipFragment
     }
-}${ShipFragment}
-`;
+  }
+  ${ShipFragment}
+`

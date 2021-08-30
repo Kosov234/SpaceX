@@ -1,20 +1,21 @@
-import { Container, Grid, Page, Typography, Image } from "@toptal/picasso";
-import { useParams } from "react-router-dom";
-import React from "react";
-import { useQuery } from "@apollo/client";
-import { query } from "../Ship/query";
-
+import { Container, Grid, Page, Typography, Image } from '@toptal/picasso'
+import { useParams } from 'react-router-dom'
+import React from 'react'
+import { useQuery } from '@apollo/client'
+import ShipQuery from '../Ship/query'
 interface IShipDetailsParams {
-  id: string;
+  id: string
 }
 
 const ShipDetailsPage: React.FunctionComponent<{}> = () => {
-  const { id }: IShipDetailsParams = useParams();
+  const { id }: IShipDetailsParams = useParams()
 
-  const { loading, error, data } = useQuery(query(id));
+  const { loading, error, data } = useQuery(ShipQuery, {
+    variables: { id }
+  })
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error : {error.message}</p>;
+  if (loading) return <p>Loading...</p>
+  if (error) return <p>Error : {error.message}</p>
 
   const {
     name,
@@ -24,8 +25,8 @@ const ShipDetailsPage: React.FunctionComponent<{}> = () => {
     year_built,
     home_port,
     successful_landings,
-    type,
-  } = data.ships[0];
+    type
+  } = data.ship
   return (
     <Page>
       <Page.TopBar title="SpaceX" />
@@ -42,10 +43,10 @@ const ShipDetailsPage: React.FunctionComponent<{}> = () => {
                 alt="Movie Image"
                 src={
                   image === null
-                    ? "https://raw.githubusercontent.com/Kosov234/Movie-app/main/images/no_image.png"
+                    ? 'https://raw.githubusercontent.com/Kosov234/Movie-app/main/images/no_image.png'
                     : image
                 }
-                style={{ width: "350px", height: "500px" }}
+                style={{ width: '350px', height: '500px' }}
               />
             </Container>
           </Grid.Item>
@@ -72,7 +73,7 @@ const ShipDetailsPage: React.FunctionComponent<{}> = () => {
       </Page.Content>
       <Page.Footer />
     </Page>
-  );
-};
+  )
+}
 
-export default ShipDetailsPage;
+export default ShipDetailsPage
