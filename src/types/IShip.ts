@@ -5,4 +5,7 @@ export default interface IShip {
   model: string | null
   status: string
   year_built: number
+  home_port? : string
+  successful_landings? : string
+  type? : string
 }

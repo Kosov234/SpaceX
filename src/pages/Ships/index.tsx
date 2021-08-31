@@ -1,18 +1,26 @@
 import React from 'react'
+import styled from 'styled-components'
 import { Container, Page, Typography, UserBadge } from '@toptal/picasso'
 import { useQuery } from '@apollo/client'
 import { Grid } from '@toptal/picasso/Grid/Grid'
 import { Link as RouterLink } from 'react-router-dom'
 import ShipsQuery from './query'
 import IShips from '../../types/IShips'
+import { ShipsSkeletonLoader } from './skeletonLoader'
 
 const ShipsPage: React.FC<{}> = () => {
   const { loading, error, data } = useQuery<IShips>(ShipsQuery, {
     variables: { limit: 20 }
   })
 
-  if (loading) return <p>Loading...</p>
   if (error) return <p>Error : {error.message}</p>
+
+  const ShipCardWrapper = styled.div`
+    background-color: #204ecf;
+    padding: 1rem;
+    width: 100%;
+    height: 120px;
+  `
 
   return (
     <Page>
@@ -20,7 +28,11 @@ const ShipsPage: React.FC<{}> = () => {
       <Page.Content>
         <Container padded={'xsmall'}>
           <Grid>
-            {data &&
+            {loading ? (
+              <ShipsSkeletonLoader />
+            ) : (
+              data &&
+              data.ships &&
               data.ships.map(ship => {
                 const { id, name, image, model, status, year_built } = ship
                 return (
@@ -29,14 +41,7 @@ const ShipsPage: React.FC<{}> = () => {
                       to={`/ships/${id}`}
                       style={{ textDecoration: 'none' }}
                     >
-                      <div
-                        style={{
-                          backgroundColor: '#204ecf',
-                          padding: '1rem',
-                          width: '100%',
-                          height: '120px'
-                        }}
-                      >
+                      <ShipCardWrapper>
                         <UserBadge
                           name={name}
                           avatar={image}
@@ -53,11 +58,12 @@ const ShipsPage: React.FC<{}> = () => {
                             {year_built}
                           </Typography>
                         </UserBadge>
-                      </div>
+                      </ShipCardWrapper>
                     </RouterLink>
                   </Grid.Item>
                 )
-              })}
+              })
+            )}
           </Grid>
         </Container>
       </Page.Content>
