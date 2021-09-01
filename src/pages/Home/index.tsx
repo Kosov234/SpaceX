@@ -18,6 +18,15 @@ const HomePage: React.FC<{}> = () => {
             >
               Ships
             </Link>
+            <Link
+              color="white"
+              underline="none"
+              as={RouterLink}
+              to="/users"
+              style={{ margin: '15px' }}
+            >
+              Users
+            </Link>
           </Container>
         }
       />

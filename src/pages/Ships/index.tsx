@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Container, Page, Typography, UserBadge } from '@toptal/picasso'
+import { Container, Link, Page, Typography, UserBadge } from '@toptal/picasso'
 import { useQuery } from '@apollo/client'
 import { Grid } from '@toptal/picasso/Grid/Grid'
 import { Link as RouterLink } from 'react-router-dom'
@@ -24,7 +24,22 @@ const ShipsPage: React.FC<{}> = () => {
 
   return (
     <Page>
-      <Page.TopBar title="SpaceX" />
+      <Page.TopBar
+        title="SpaceX"
+        rightContent={
+          <Container>
+            <Link
+              color="white"
+              underline="none"
+              as={RouterLink}
+              to="/users"
+              style={{ margin: '15px' }}
+            >
+              Users
+            </Link>
+          </Container>
+        }
+      />
       <Page.Content>
         <Container padded={'xsmall'}>
           <Grid>
