@@ -14,7 +14,7 @@ import { GetUsersQuery } from './queries'
 import { CreateUserForm } from './createUserForm'
 
 export const UsersPage: React.FC<{}> = () => {
-  const { loading, error, data, refetch } = useQuery<IUsers>(GetUsersQuery, {
+  const { loading, error, data } = useQuery<IUsers>(GetUsersQuery, {
     variables: { limit: 20 }
   })
 
@@ -63,7 +63,7 @@ export const UsersPage: React.FC<{}> = () => {
               </Container>
             </Grid.Item>
             <Grid.Item small={6}>
-              <CreateUserForm UpdateQuery={refetch} />
+              <CreateUserForm />
             </Grid.Item>
           </Grid>
         </Page.Article>

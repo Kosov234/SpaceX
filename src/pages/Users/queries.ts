@@ -14,7 +14,9 @@ export const InsertUserQuery = gql`
   mutation InsertUser($name: String!, $rocket: String!, $twitter: String!) {
     insert_users(objects: { name: $name, rocket: $rocket, twitter: $twitter }) {
       returning {
-        id
+        name
+        rocket
+        twitter
       }
     }
   }

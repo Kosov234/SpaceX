@@ -2,35 +2,14 @@ import { useMutation } from '@apollo/client'
 import { Button, Container } from '@toptal/picasso'
 import { Form, FormSpy } from '@toptal/picasso-forms'
 import React, { useState } from 'react'
-import IUser from '../../types/IUser'
-import { InsertUserQuery } from './queries'
+import { GetUsersQuery, InsertUserQuery } from './queries'
 
-interface IComponentProps {
-  UpdateQuery: () => void
-}
-
-export const CreateUserForm: React.FC<IComponentProps> = (
-  Props: IComponentProps
-) => {
-  const [formState, setFormState] = useState<IUser>({
-    name: '',
-    rocket: '',
-    twitter: ''
-  })
+export const CreateUserForm: React.FC<{}> = () => {
   const [displayForm, setDisplayForm] = useState('block')
 
   const [buttonIsActive, setButtonIsActive] = useState(true)
 
-  const [insertUser] = useMutation(InsertUserQuery, {
-    variables: {
-      name: formState.name,
-      rocket: formState.rocket,
-      twitter: formState.twitter
-    },
-    onCompleted() {
-      Props.UpdateQuery()
-    }
-  })
+  const [insertUser, { error }] = useMutation(InsertUserQuery)
 
   const toggleForm = () => {
     if (displayForm === 'block') {
@@ -42,6 +21,8 @@ export const CreateUserForm: React.FC<IComponentProps> = (
     }
   }
 
+  if (error) return <p>Error : {error.message}(</p>
+
   return (
     <Container padded="small">
       <Button fullWidth onClick={toggleForm} disabled={buttonIsActive}>
@@ -49,27 +30,39 @@ export const CreateUserForm: React.FC<IComponentProps> = (
       </Button>
       <Container padded="small" style={{ display: `${displayForm}` }}>
         <Form
-          onSubmit={() => {
-            insertUser()
+          onSubmit={user => {
+            insertUser({
+              variables: {
+                name: user.name,
+                rocket: user.rocket,
+                twitter: user.twitter
+              },
+              update: (cache, { data: { insertUser } }) => {
+                const data: any = cache.readQuery({
+                  query: GetUsersQuery,
+                  variables: { limit: 20 }
+                })
+                cache.writeQuery({
+                  query: GetUsersQuery,
+                  variables: { limit: 20 },
+                  data: {
+                    ...data,
+                    users: [
+                      ...data.users,
+                      { __typename: 'users', ...insertUser }
+                    ]
+                  }
+                })
+              }
+            })
           }}
           successSubmitMessage="Congratulations, new user has been created!"
         >
-          <Form.Input
-            required
-            name="name"
-            label="Name"
-            width="full"
-            onChange={(e: React.FormEvent<HTMLInputElement>) => {
-              setFormState({ ...formState, name: e.currentTarget.value })
-            }}
-          />
+          <Form.Input required name="name" label="Name" width="full" />
           <FormSpy>
             {({ values }) => (
               <Form.Input
                 required
-                onChange={(e: React.FormEvent<HTMLInputElement>) => {
-                  setFormState({ ...formState, rocket: e.currentTarget.value })
-                }}
                 disabled={!values?.name}
                 name="rocket"
                 label="Rocket"
@@ -81,10 +74,6 @@ export const CreateUserForm: React.FC<IComponentProps> = (
           <FormSpy>
             {({ values }) => (
               <Form.Input
-                value={formState.twitter}
-                onChange={(e: React.FormEvent<HTMLInputElement>) => {
-                  setFormState({ ...formState, twitter: e.currentTarget.value })
-                }}
                 disabled={!values?.rocket}
                 required
                 name="twitter"
